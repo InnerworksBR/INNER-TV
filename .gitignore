@@ -1,0 +1,66 @@
+# ===========================
+# Dependências
+# ===========================
+node_modules/
+.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# ===========================
+# Next.js (web/)
+# ===========================
+web/.next/
+web/out/
+web/build/
+web/npm-debug.log*
+web/yarn-debug.log*
+web/yarn-error.log*
+web/.pnpm-debug.log*
+web/*.tsbuildinfo
+web/next-env.d.ts
+web/.vercel
+
+# ===========================
+# Flutter (mobile/)
+# ===========================
+mobile/.dart_tool/
+mobile/.flutter-plugins
+mobile/.flutter-plugins-dependencies
+mobile/.packages
+mobile/.pub-cache/
+mobile/.pub/
+mobile/build/
+mobile/android/.gradle/
+mobile/android/local.properties
+mobile/android/key.properties
+mobile/*.keystore
+mobile/*.jks
+
+# ===========================
+# Supabase Docker (backend/)
+# ===========================
+backend/supabase-docker/volumes/
+backend/supabase-docker/logs/
+
+# ===========================
+# Variáveis de ambiente (SENSÍVEL)
+# ===========================
+.env
+.env.*
+!.env.example
+web/.env.local
+web/.env*.local
+
+# ===========================
+# Misc
+# ===========================
+.DS_Store
+*.pem
+/coverage
+*.log
+.idea/
+.vscode/
