@@ -50,7 +50,21 @@ export default function Content() {
             setUploading(false);
         }
     }
-    // ... existing handleUpload ...
+    // Extracts video duration using a temporary video element
+    const getVideoDuration = (file: File): Promise<number> => {
+        return new Promise((resolve) => {
+            const video = document.createElement('video');
+            video.preload = 'metadata';
+            video.onloadedmetadata = () => {
+                window.URL.revokeObjectURL(video.src);
+                resolve(Math.round(video.duration));
+            };
+            video.onerror = () => {
+                resolve(10); // Fallback if error
+            };
+            video.src = URL.createObjectURL(file);
+        });
+    };
 
     async function handleUpload(e: React.ChangeEvent<HTMLInputElement>) {
         const file = e.target.files?.[0];
@@ -75,13 +89,19 @@ export default function Content() {
                 .getPublicUrl(filePath);
 
             // 3. Save to Database
+            const isVideo = file.type.startsWith('video');
+            let duration = 10;
+            if (isVideo) {
+                duration = await getVideoDuration(file);
+            }
+
             const { error: dbError } = await supabase
                 .from('media')
                 .insert([{
                     name: file.name,
                     url: publicUrl,
-                    type: file.type.startsWith('video') ? 'video' : 'image',
-                    duration_seconds: 10
+                    type: isVideo ? 'video' : 'image',
+                    duration_seconds: duration
                 }]);
 
             if (dbError) throw dbError;
@@ -217,8 +237,8 @@ export default function Content() {
 
                                 <div className="absolute top-3 right-3">
                                     <div className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider backdrop-blur-md ${item.type === "image" ? "bg-amber-500/20 text-amber-500" :
-                                            item.type === "video" ? "bg-blue-500/20 text-blue-500" :
-                                                "bg-purple-500/20 text-purple-500"
+                                        item.type === "video" ? "bg-blue-500/20 text-blue-500" :
+                                            "bg-purple-500/20 text-purple-500"
                                         }`}>
                                         {item.type}
                                     </div>
