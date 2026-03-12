@@ -1,4 +1,4 @@
-create table profiles (
+﻿create table profiles (
   id uuid references auth.users not null,
   updated_at timestamp with time zone,
   username text unique,

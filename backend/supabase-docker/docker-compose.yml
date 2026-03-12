@@ -1,4 +1,4 @@
-# Usage
+﻿# Usage
 #   Start:              docker compose up
 #   With helpers:       docker compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml up
 #   Stop:               docker compose down
@@ -13,6 +13,8 @@ services:
     container_name: supabase-studio
     image: supabase/studio:2026.02.16-sha-26c615c
     restart: unless-stopped
+    ports:
+      - ${STUDIO_PORT}:3000
     healthcheck:
       test: [ "CMD", "node", "-e", "fetch('http://studio:3000/api/platform/profile').then((r) => {if (r.status !== 200) throw new Error(r.status)})" ]
       timeout: 10s

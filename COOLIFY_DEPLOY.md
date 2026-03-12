@@ -19,7 +19,9 @@ O backend é orquestrado via Docker Compose.
    - Copie o conteúdo dele e cole na seção "Environment Variables" / ".env" do Coolify.
    - **MUITO IMPORTANTE:** Substitua as chaves padrão (`JWT_SECRET`, `ANON_KEY`, `SERVICE_ROLE_KEY`, `POSTGRES_PASSWORD`, etc.) por chaves seguras geradas por você. (Você pode usar um gerador online ou `openssl rand -hex 32` / JWT baseados em HS256).
    - Não esqueça de configurar `API_EXTERNAL_URL` e `SITE_URL` para o domínio/IP público onde o Supabase vai rodar, além do `SUPABASE_PUBLIC_URL`.
-6. Salve e clique em **Deploy**. O Coolify vai ler o `docker-compose.yml` e subir todos os contêineres do Supabase.
+6. Vá na rota de **Domains** e adicione o domínio ou subdomínio do seu backend.
+7. **Destination Port**: Verifique se a porta de destino está configurada como **8080**.
+8. Clique em **Deploy**. O Coolify vai ler o `docker-compose.yml` e subir todos os contêineres do Supabase.
 
 > **Importante**: As configurações de persistência (`./volumes/...`) vão funcionar corretamente SE E SOMENTE SE você ativar a opção descrita no passo abaixo.
 > 
@@ -35,11 +37,14 @@ O painel web Next.js usa o Nixpacks, que é o sistema padrão e automatizado do 
 2. Selecione o mesmo repositório do Git.
 3. **Configurações essenciais:**
    - **Base Directory**: `/web`
+   - **Destination Port**: Configure como **3001**.
    - O Coolify vai detectar automaticamente que é um app Next.js (via pacote Nixpacks) e configurar os comandos `npm install`, `npm run build` e `npm start`.
 4. **Environment Variables**:
    Va na aba **Environment Variables** e adicione as variáveis que estão no seu `web/.env.example`:
    - `NEXT_PUBLIC_SUPABASE_URL`: A URL pública do Supabase configurado no passo 1.
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`: A chave anônima (ANON_KEY) que você gerou no passo 1.
+   - `PORT`: **3001** (Para evitar conflitos com a porta 3000 padrão).
+   - `HOSTNAME`: **0.0.0.0** (Obrigatório para o Coolify acessar o container).
 5. Salve as variáveis.
 6. Vá na rota de **Domains** e adicione o domínio ou subdomínio do seu dashboard web.
 7. Clique em **Deploy**.
